@@ -35,6 +35,11 @@ install_sfdx_cli() {
   chmod -R 755  "$BUILD_DIR/vendor/sfdx/cli"
 }
 
+install_connected_app_plugins() {
+  log "Installing the Connected App Plugins ..."
+  echo 'y' | sf plugins:install @sharinpix/spx-connected-app
+}
+
 install_jq() {
   log "Downloading jq ..."
   mkdir -p "$BUILD_DIR/vendor/sfdx/jq"
@@ -62,6 +67,9 @@ debug "BP_DIR: $BP_DIR"
 setup_dirs
 log "Starting CLI installation ..."
 install_sfdx_cli
+
+log "Starting Connected App plugin installation ..."
+install_connected_app_plugins
 
 log "Starting jq installation ..."
 install_jq

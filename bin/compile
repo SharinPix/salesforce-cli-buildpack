@@ -32,12 +32,14 @@ install_sfdx_cli() {
   rm -rf "$BUILD_DIR/vendor/sfdx"
   mkdir -p "$BUILD_DIR/vendor/sfdx"
   cp -r sfdx "$BUILD_DIR/vendor/sfdx/cli"
-  chmod -R 755  "$BUILD_DIR/vendor/sfdx/cli"
+  log "DELETING ... $BUILD_DIR/vendor/sfdx/cli/bin/node"
+  rm -rf "$BUILD_DIR/vendor/sfdx/cli/bin/node"
+  chmod -R 755  "$BUILD_DIR/vendor/sfdx/cli/"
 }
 
 install_connected_app_plugins() {
   log "Installing the Connected App Plugins ..."
-  echo 'y' | sf plugins:install @sharinpix/spx-connected-app
+  echo 'y' | "$BUILD_DIR/vendor/sfdx/cli/bin/sf" plugins:install @sharinpix/spx-connected-app
 }
 
 install_jq() {

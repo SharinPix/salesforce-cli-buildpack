@@ -39,6 +39,7 @@ install_sfdx_cli() {
 
 install_connected_app_plugins() {
   log "Installing the Connected App Plugins ..."
+  mkdir -p "$BUILD_DIR/vendor/sfdx/sfdx_data"
   echo 'y' | "$BUILD_DIR/vendor/sfdx/cli/bin/sf" plugins:install @sharinpix/spx-connected-app
 }
 
@@ -51,8 +52,10 @@ install_jq() {
 }
 
 setup_dirs() {
+  export SFDX_DATA_DIR="$BUILD_DIR/vendor/sfdx/sfdx_data"
   export PATH="$BUILD_DIR/vendor/sfdx/cli/bin:$PATH"
   export PATH="$BUILD_DIR/vendor/sfdx/jq:$PATH"
+  export PATH="$BUILD_DIR/vendor/sfdx/sfdx_data:$PATH"
 }
 
 header 'Welcome to salesforce-cli-buildpack!'
@@ -84,6 +87,9 @@ if [ ! -f $BUILD_DIR/.profile.d/path.sh ]; then
   log "Creating path.sh ..."
   echo "echo \"Updating PATH to include Salesforce CLI ...\"
 export PATH=\$PATH:/app/vendor/sfdx/cli/bin/" > $BUILD_DIR/.profile.d/path.sh
+
+  echo "echo \"Updating PATH to include Salesforce DATA Directory ...\"
+export PATH=\$PATH:/app/vendor/sfdx/sfdx_data" > $BUILD_DIR/.profile.d/path.sh
 
   log "Generated $BUILD_DIR/.profile.d/path.sh to add CLI path"
 fi

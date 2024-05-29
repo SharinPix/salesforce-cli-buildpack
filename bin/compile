@@ -88,8 +88,8 @@ if [ ! -f $BUILD_DIR/.profile.d/path.sh ]; then
   echo "echo \"Updating PATH to include Salesforce CLI ...\"
 export PATH=\$PATH:/app/vendor/sfdx/cli/bin/" > $BUILD_DIR/.profile.d/path.sh
 
-  echo "echo \"Updating PATH to include Salesforce DATA Directory ...\"
-export PATH=\$PATH:/app/vendor/sfdx/sfdx_data" >> $BUILD_DIR/.profile.d/path.sh
+  echo "echo \"Updating SFDX_DATA_DIR to include Salesforce DATA Directory ...\"
+export SFDX_DATA_DIR=/app/vendor/sfdx/sfdx_data" >> $BUILD_DIR/.profile.d/path.sh
 
   log "Generated $BUILD_DIR/.profile.d/path.sh to add CLI path"
 fi

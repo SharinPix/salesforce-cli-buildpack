@@ -37,11 +37,11 @@ install_sfdx_cli() {
   chmod -R 755  "$BUILD_DIR/vendor/sfdx/cli/"
 }
 
-# install_connected_app_plugins() {
-#   log "Installing the Connected App Plugins ..."
-#   mkdir -p "$BUILD_DIR/vendor/sfdx/sfdx_data"
-#   echo 'y' | "$BUILD_DIR/vendor/sfdx/cli/bin/sf" plugins:install @sharinpix/spx-connected-app
-# }
+install_connected_app_plugins() {
+  log "Installing the Connected App Plugins ..."
+  mkdir -p "$BUILD_DIR/vendor/sfdx/sfdx_data"
+  echo 'y' | "$BUILD_DIR/vendor/sfdx/cli/bin/sf" plugins:install @sharinpix/spx-connected-app
+}
 
 install_jq() {
   log "Downloading jq ..."
@@ -55,7 +55,7 @@ setup_dirs() {
   export SFDX_DATA_DIR="$BUILD_DIR/vendor/sfdx/sfdx_data"
   export PATH="$BUILD_DIR/vendor/sfdx/cli/bin:$PATH"
   export PATH="$BUILD_DIR/vendor/sfdx/jq:$PATH"
-  # export PATH="$BUILD_DIR/vendor/sfdx/sfdx_data:$PATH"
+  export PATH="$BUILD_DIR/vendor/sfdx/sfdx_data:$PATH"
 }
 
 header 'Welcome to salesforce-cli-buildpack!'
@@ -73,8 +73,8 @@ setup_dirs
 log "Starting CLI installation ..."
 install_sfdx_cli
 
-# log "Starting Connected App plugin installation ..."
-# install_connected_app_plugins
+log "Starting Connected App plugin installation ..."
+install_connected_app_plugins
 
 log "Starting jq installation ..."
 install_jq
@@ -88,14 +88,11 @@ if [ ! -f $BUILD_DIR/.profile.d/path.sh ]; then
   echo "echo \"Updating PATH to include Salesforce CLI ...\"
 export PATH=\$PATH:/app/vendor/sfdx/cli/bin/" > $BUILD_DIR/.profile.d/path.sh
 
-#   echo "echo \"Updating PATH to include Salesforce DATA Directory ...\"
-# export PATH=\$PATH:/app/vendor/sfdx/sfdx_data" >> $BUILD_DIR/.profile.d/path.sh
+  echo "echo \"Updating SFDX_DATA_DIR to include Salesforce DATA Directory ...\"
+export SFDX_DATA_DIR=/app/vendor/sfdx/sfdx_data" >> $BUILD_DIR/.profile.d/path.sh
 
   log "Generated $BUILD_DIR/.profile.d/path.sh to add CLI path"
 fi
-
-echo "echo \"-----> Installing Connected App plugin \"" >> $BUILD_DIR/.profile.d/path.sh
-echo "echo 'y' | sfdx plugins:install @sharinpix/spx-connected-app" >> $BUILD_DIR/.profile.d/path.sh
 
 header "DONE! Completed in $(($SECONDS - $START_TIME))s"
 exit 0
